@@ -111,7 +111,6 @@ app.post('/register',(req,res)=>{
 	var id = req.query.id;
 	var user = req.query.user;
 	var pass = req.query.pass;
-	console.log(req.body)
 	console.log(req.query.user)
 	if(id == 1){
 		suiji()
@@ -201,21 +200,89 @@ app.post('/about',(req,res)=>{
 	})	
 })
 
-// app.post('/xiangqing',(req,res)=>{
-// 	res.header('Access-Control-Allow-Origin','*')	
-// //	console.log(req.query.id)
-// 	// console.log(req.query)
-// 	var id=req.query.id
-// 	mongodb.connect(db_str,(err,database)=>{		
-// 		database.collection('about',(err,coll)=>{			
-// 			coll.find({id:id}).toArray((err,data)=>{			
-// 				res.send(data)
-// //				console.log(data)
-// 				database.close();
-// 			})			
-// 		})
-// 	})	
-// })
+
+app.post('/detail',(req,res)=>{
+	res.header('Access-Control-Allow-Origin','*')	
+//	console.log(req.query.id)
+	// console.log(req.query)
+	var id=req.query.id
+	mongodb.connect(db_str,(err,database)=>{		
+		database.collection('products',(err,coll)=>{			
+			coll.find({id:id}).toArray((err,data)=>{			
+				res.send(data)
+//				console.log(data)
+				database.close();
+			})			
+		})
+	})	
+})
+
+app.post('/jiekuan',(req,res)=>{
+	res.header('Access-Control-Allow-Origin','*')	
+	console.log(req.query.tit)
+	mongodb.connect(db_str,(err,database)=>{		
+		database.collection('jie',(err,coll)=>{	
+			coll.find({tit:req.query.tit}).toArray((err,data)=>{
+				if(data.length>0){
+					console.log(data)
+					res.send('1')
+				}else{
+					coll.save(req.query,()=>{
+						res.send('2')
+					})
+				}
+				database.close()
+			})  							 					
+		})
+	})	
+})
+
+app.post('/huan',(req,res)=>{
+	res.header('Access-Control-Allow-Origin','*')	
+	console.log(req.query.tit)
+	mongodb.connect(db_str,(err,database)=>{		
+		database.collection('jie',(err,coll)=>{	
+			coll.find({}).toArray((err,data)=>{	
+				console.log(data)
+				res.send(data)
+//				console.log(data)
+				database.close();
+			})  							 					
+		})
+	})	
+})
+
+app.post('/cha',(req,res)=>{
+	res.header('Access-Control-Allow-Origin','*')	
+	console.log(req.query)
+	mongodb.connect(db_str,(err,database)=>{		
+		database.collection('jie',(err,coll)=>{	
+			coll.find({id:req.query.id}).toArray((err,data)=>{			
+				if(data.length>0){					
+					coll.deleteOne({id:req.query.id},()=>{
+						res.send('1')
+					})
+				}else{
+					res.send('2')
+				}
+				database.close()
+			})
+		})
+	})	
+})
+
+app.post('/yue',(req,res)=>{
+	res.header('Access-Control-Allow-Origin','*')	
+	console.log(req.query)
+	mongodb.connect(db_str,(err,database)=>{		
+		database.collection('jie',(err,coll)=>{	
+			coll.find({user:req.query.user}).toArray((err,data)=>{			
+				res.send(data)
+				database.close()
+			})
+		})
+	})	
+})
 
 // app.post('/touz',(req,res)=>{
 // 	res.header('Access-Control-Allow-Origin','*')	
@@ -242,20 +309,20 @@ app.post('/about',(req,res)=>{
 // 	})	
 // })
 
-// app.post('/jilu',(req,res)=>{
-// 	res.header('Access-Control-Allow-Origin','*')	
-// 	console.log(req.query.id)
-// 	var id=req.query.id
-// 	mongodb.connect(db_str,(err,database)=>{		
-// 		database.collection('touzi',(err,coll)=>{			
-// 			coll.find({}).toArray((err,data)=>{			
-// 				res.send(data)
-// 				console.log(data)
-// 				database.close();
-// 			})			
-// 		})
-// 	})	
-// })
+app.post('/jilu',(req,res)=>{
+   	res.header('Access-Control-Allow-Origin','*')	
+   	console.log(req.query.id)
+   	var id=req.query.id
+   	mongodb.connect(db_str,(err,database)=>{		
+   		database.collection('jie',(err,coll)=>{			
+   			coll.find({}).toArray((err,data)=>{			
+   				res.send(data)
+   				console.log(data)
+   				database.close();
+   			})			
+   		})
+   	})	
+})
 
 
 //搭建服务器
