@@ -315,7 +315,7 @@ app.post('/jilu',(req,res)=>{
    	var id=req.query.id
    	mongodb.connect(db_str,(err,database)=>{		
    		database.collection('jie',(err,coll)=>{			
-   			coll.find({}).toArray((err,data)=>{			
+   			coll.find({user:req.query.user}).toArray((err,data)=>{			
    				res.send(data)
    				console.log(data)
    				database.close();
